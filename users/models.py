@@ -14,6 +14,6 @@ class User(AbstractUser):
         related_name="custom_user_permissions_set",
         blank=True
     )
-
+    
     def __str__(self):
         return self.username
