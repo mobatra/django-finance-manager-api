@@ -4,9 +4,10 @@ from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 User = get_user_model()
+print(User)
 
 class UserViewSet(ModelViewSet):
-    query_set = User.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     def get_permissions(self):
         if self.action == 'create':
