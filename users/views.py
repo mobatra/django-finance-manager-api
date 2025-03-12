@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
+from .permissions import IsAdminUser, IsManager, IsUser
 
 User = get_user_model()
 print(User)
@@ -16,8 +17,9 @@ class UserViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action == 'create':
             return [AllowAny()]
-        else:
-            return [IsAuthenticated()]
+        elif self.action in ['list', 'retrieve', 'update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]
+        return [IsAuthenticated()]
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -28,4 +30,4 @@ class LogoutView(APIView):
             token.blacklist()
             return Response({"detail": "Logout successful."}, status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
-            return Response({"error": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)            
+            return Response({"error": "Invalid token."}, status=status.HTTP_400_BAD_REQUEST)
