@@ -1,5 +1,7 @@
 from django.urls import path
+from .views import TransactionListCreateView, TransactionDetailView
 
 urlpatterns = [
-    # Transaction API endpoints will be added here
+    path("", TransactionListCreateView.as_view(), name="transaction-list-create"),
+    path("/<int:pk>", TransactionDetailView.as_view(), name="transaction-detail")
 ]
